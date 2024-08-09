@@ -4,7 +4,7 @@ DAEMON=proftpd
 CONFPATH=/etc/proftpd/sftp
 
 stop() {
-	echo "Received SIGINT or SIGTERM. Shutting down $DAEMON"
+	echo "Received INT or TERM. Shutting down $DAEMON"
 
 	# Get PID
 	pid=$(cat /tmp/${DAEMON}.pid)
@@ -12,7 +12,9 @@ stop() {
 	kill "${pid}"
 }
 
-trap stop SIGINT SIGTERM
+# Trap signals (without SIG prefix)
+trap 'signal_handler INT' INT
+trap 'signal_handler TERM' TERM
 
 if [ -n "$SFTP_TZ" ]; then
 	cp -av /usr/share/zoneinfo/${SFTP_TZ} /etc/localtime
@@ -36,13 +38,13 @@ cd /
 #
 
 if [ ! -e ${CONFPATH}/keys/ssh_host_rsa_key ]; then
-rm -rf /etc/ssh
-ln -s ${CONFPATH}/keys /etc/ssh
-ssh-keygen -A -m PEM
-find /etc/proftpd/sftp
-find /etc/ssh
-chown -R ${owner} ${CONFPATH}/keys/*
-rm /etc/ssh
+  rm -rf /etc/ssh
+  ln -s ${CONFPATH}/keys /etc/ssh
+  ssh-keygen -A -m PEM
+  find /etc/proftpd/sftp
+  find /etc/ssh
+  chown -R ${owner} ${CONFPATH}/keys/*
+  rm /etc/ssh
 fi
 
 proftpd -n &
