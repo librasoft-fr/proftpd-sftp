@@ -1,0 +1,5 @@
+/config/authorized_keys/
+/config/keys/
+/config/ftpgroup
+/config/ftppasswd
+/.idea/
