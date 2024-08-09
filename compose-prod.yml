@@ -1,0 +1,15 @@
+services:
+  sftp:
+    container_name: sftp
+    image: librasoftfr/proftpd-sftp:latest
+    restart: always
+    networks:
+      - default
+    volumes:
+      - ./mydata:/data
+      - ./config:/etc/proftpd/sftp
+    ports:
+      - 2222:2222
+    environment:
+      - SFTP_AUTH_METHODS=password
+      - SFTP_TZ=Europe/Paris
