@@ -33,14 +33,14 @@ services:
       - ./mydata:/data
       - ./config:/etc/proftpd/sftp
     ports:
-      - 2222:2222
+      - ${SFTP_PORT:-2222}:2222
     environment:
-      - SFTP_AUTH_METHODS=password
-      - SFTP_TZ=Europe/Paris
-      - SFTP_MAX_INSTANCES=30
-      - SFTP_TIMEOUT_NO_TRANSFER=600
-      - SFTP_TIMEOUT_STALLED=600
-      - SFTP_TIMEOUT_IDLE=1200
+      - SFTP_AUTH_METHODS=${SFTP_AUTH_METHODS:-password}
+      - SFTP_TZ=${SFTP_TZ:-Europe/Paris}
+      - SFTP_MAX_INSTANCES=${SFTP_MAX_INSTANCES:-30}
+      - SFTP_TIMEOUT_NO_TRANSFER=${SFTP_TIMEOUT_NO_TRANSFER:-600}
+      - SFTP_TIMEOUT_STALLED=${SFTP_TIMEOUT_STALLED:-600}
+      - SFTP_TIMEOUT_IDLE=${SFTP_TIMEOUT_IDLE:-1200}
 ```
 
 ## Create a user/group
