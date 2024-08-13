@@ -13,3 +13,7 @@ services:
     environment:
       - SFTP_AUTH_METHODS=password
       - SFTP_TZ=Europe/Paris
+      - SFTP_MAX_INSTANCES=30
+      - SFTP_TIMEOUT_NO_TRANSFER=600
+      - SFTP_TIMEOUT_STALLED=600
+      - SFTP_TIMEOUT_IDLE=1200

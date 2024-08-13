@@ -37,6 +37,10 @@ services:
     environment:
       - SFTP_AUTH_METHODS=password
       - SFTP_TZ=Europe/Paris
+      - SFTP_MAX_INSTANCES=30
+      - SFTP_TIMEOUT_NO_TRANSFER=600
+      - SFTP_TIMEOUT_STALLED=600
+      - SFTP_TIMEOUT_IDLE=1200
 ```
 
 ## Create a user/group
@@ -77,6 +81,14 @@ Commands:
   - Timezone(ex. Europe/Paris) (optional)
 - SFTP_AUTH_METHODS
   - SFTPAuthMethods(publickey, password, or publickey+password) (default:publickey) (optional)
+- SFTP_MAX_INSTANCES
+  - The MaxInstances directive configures the maximum number of child (session) processes that may be spawned by the proftpd daemon process when running with "ServerType standalone" configured. The directive has no effect when proftpd is configured with "ServerType inetd".
+- SFTP_TIMEOUT_NO_TRANSFER
+  - The TimeoutNoTransfer directive configures the maximum number of seconds a client is allowed to spend connected, after authentication, without issuing a data transfer command which results in a data connection (i.e. sending/receiving a file, or requesting a directory listing). The maximum allowed seconds value is 65535 (18 hours).
+- SFTP_TIMEOUT_STALLED
+  - The TimeoutStalled directive sets the maximum number of seconds a data connection between proftpd and a client can exist but have no actual data transferred (i.e. "stalled"). If the seconds parameter is set to zero, data transfers are allowed to stall indefinitely; note that this is not a recommended configuration. The maximum allowed seconds value is 65535 (18 hours).
+- SFTP_TIMEOUT_IDLE
+  - The TimeoutIdle directive configures the maximum number of seconds that proftpd will allow clients to stay connected without receiving any data on either the control or data connection. If data are received on either connection, the idle timer is reset. Setting TimeoutIdle to zero disables the idle timer completely, meaning that clients can stay connected forever, without sending data. Note: this is generally a very bad idea, as a "hung" TCP connection which is never properly disconnected (e.g. the remote network may have become disconnected from the Internet, etc) will cause a session process to never exit, until manually killed. This session process will thus linger, using up one of the MaxInstances as well as any of the other configured limits. The maximum allowed seconds value is 65535 (18 hours).
 
 ### Configuration file
 If you want modify configuration file(s), mount your file to these places.
