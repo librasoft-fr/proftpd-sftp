@@ -3,3 +3,4 @@
 /config/ftpgroup
 /config/ftppasswd
 /.idea/
+.env
